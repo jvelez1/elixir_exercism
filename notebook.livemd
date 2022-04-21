@@ -1,0 +1,248 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# Elixir Exercism
+
+## Basics
+
+## Exercise 1
+
+Instructions
+In this exercise you're going to write some code to help you cook a brilliant lasagna from your favorite cooking book.
+
+You have five tasks, all related to the time spent cooking the lasagna.
+
+1. Define the expected oven time in minutes
+   Define the Lasagna.expected_minutes_in_oven/0 method that does not take any arguments and returns how many minutes the lasagna should be in the oven. According to the cooking book, the expected oven time in minutes is 40:
+
+```
+Lasagna.expected_minutes_in_oven()
+# => 40
+```
+
+1. Calculate the remaining oven time in minutes
+   Define the Lasagna.remaining_minutes_in_oven/1 method that takes the actual minutes the lasagna has been in the oven as a argument and returns how many minutes the lasagna still has to remain in the oven, based on the expected oven time in minutes from the previous task.
+   ```
+   Lasagna.remaining_minutes_in_oven(30)
+   # => 10
+   ```
+2. Calculate the preparation time in minutes
+   Define the Lasagna.preparation_time_in_minutes/1 method that takes the number of layers you added to the lasagna as a argument and returns how many minutes you spent preparing the lasagna, assuming each layer takes you 2 minutes to prepare.
+   ```
+   Lasagna.preparation_time_in_minutes(2)
+   # => 4
+   ```
+3. Calculate the total working time in minutes
+   Define the Lasagna.total_time_in_minutes/2 method that takes two arguments: the first argument is the number of layers you added to the lasagna, and the second argument is the number of minutes the lasagna has been in the oven. The function should return how many minutes in total you've worked on cooking the lasagna, which is the sum of the preparation time in minutes, and the time in minutes the lasagna has spent in the oven at the moment.
+   ```
+   Lasagna.total_time_in_minutes(3, 20)
+   # => 26
+   ```
+4. Create a notification that the lasagna is ready
+   Define the Lasagna.alarm/0 method that does not take any arguments and returns a message indicating that the lasagna is ready to eat.
+   ```
+   Lasagna.alarm()
+   # => "Ding!"
+   ```
+
+```elixir
+defmodule Lasagna do
+  def alarm() do
+    "Ding!"
+  end
+
+  def expected_minutes_in_oven() do
+    40
+  end
+
+  def remaining_minutes_in_oven(minutes_in_oven) do
+    expected_minutes_in_oven() - minutes_in_oven
+  end
+
+  def preparation_time_in_minutes(layers) do
+    layers * 2
+  end
+
+  def total_time_in_minutes(layers, minutes_in_oven) do
+    preparation_time_in_minutes(layers) + minutes_in_oven
+  end
+end
+
+IO.inspect(Lasagna.expected_minutes_in_oven())
+IO.inspect(Lasagna.remaining_minutes_in_oven(30))
+IO.inspect(Lasagna.preparation_time_in_minutes(2))
+IO.inspect(Lasagna.total_time_in_minutes(3, 20))
+
+Lasagna.alarm()
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+40
+10
+4
+26
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"Ding!"
+```
+
+## Exercise 2
+
+Instructions
+In this exercise, you've been tasked with writing the software for an encryption device that works by performing transformations on data. You need a way to flexibly create complicated functions by combining simpler functions together.
+
+For each task, return an anonymous function that can be invoked from the calling scope.
+
+All functions should expect integer arguments. Integers are also suitable for performing bitwise operations in Elixir.
+
+1. Create an adder
+   Implement Secrets.secret_add/1. It should return a function which takes one argument and adds to it the argument passed in to secret_add.
+
+   ```
+   adder = Secrets.secret_add(2)
+   adder.(2)
+   # => 4
+   ```
+
+2. Create a subtractor
+   Implement Secrets.secret_subtract/1. It should return a function which takes one argument and subtracts from it the secret passed in to secret_subtract.
+
+   ```
+   subtractor = Secrets.secret_subtract(2)
+   subtractor.(3)
+   # => 1
+   ```
+
+3. Create a multiplier
+   Implement Secrets.secret_multiply/1. It should return a function which takes one argument and multiplies it by the secret passed in to secret_multiply.
+
+   ```
+   multiplier = Secrets.secret_multiply(7)
+   multiplier.(3)
+   # => 21
+   ```
+
+4. Create a divider
+   Implement Secrets.secret_divide/1. It should return a function which takes one argument and divides it by the secret passed in to secret_divide.
+
+   ```
+   divider = Secrets.secret_divide(3)
+   divider.(32)
+   # => 10
+   ```
+
+   Make use of integer division so the output is compatible with the other functions' expected input.
+
+5. Create an "and"-er
+   Implement Secrets.secret_and/1. It should return a function which takes one argument and performs a bitwise and operation on it and the secret passed in to secret_and.
+
+   ```
+   ander = Secrets.secret_and(1)
+   ander.(2)
+   # => 0
+   ```
+
+6. Create an "xor"-er
+   Implement Secrets.secret_xor/1. It should return a function which takes one argument and performs a bitwise xor operation on it and the secret passed in to secret_xor.
+
+   ```
+   xorer = Secrets.secret_xor(1)
+   xorer.(3)
+   # => 2
+   ```
+
+7. Create a function combiner
+   Implement Secrets.secret_combine/2. It should return a function which takes one argument and applies to it the two functions passed in to secret_combine in order.
+
+   ```
+   multiply = Secrets.secret_multiply(7)
+   divide = Secrets.secret_divide(3)
+   combined = Secrets.secret_combine(multiply, divide)
+   ```
+
+combined.(6)
+
+```
+
+```
+
+```elixir
+defmodule Secrets do
+  use Bitwise
+
+  def secret_add(num) do
+    &(&1 + num)
+  end
+
+  def secret_subtract(num) do
+    &(&1 - num)
+  end
+
+  def secret_multiply(num) do
+    &(num * &1)
+  end
+
+  def secret_divide(num) do
+    &Integer.floor_div(&1, num)
+  end
+
+  def secret_and(num) do
+    &(&1 &&& num)
+  end
+
+  def secret_xor(num) do
+    &Bitwise.bxor(&1, num)
+  end
+
+  def secret_combine(func_1, func_2) do
+    &func_2.(func_1.(&1))
+  end
+end
+
+adder = Secrets.secret_add(2)
+IO.inspect(adder.(2))
+
+subtractor = Secrets.secret_subtract(2)
+IO.inspect(subtractor.(3))
+
+multiplier = Secrets.secret_multiply(7)
+IO.inspect(multiplier.(3))
+
+divider = Secrets.secret_divide(3)
+IO.inspect(divider.(32))
+
+ander = Secrets.secret_and(1)
+IO.inspect(ander.(2))
+
+xorer = Secrets.secret_xor(1)
+IO.inspect(xorer.(3))
+
+multiply = Secrets.secret_multiply(7)
+divide = Secrets.secret_divide(3)
+combined = Secrets.secret_combine(multiply, divide)
+IO.inspect(combined.(6))
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+4
+1
+21
+10
+0
+2
+14
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+14
+```
+
+
