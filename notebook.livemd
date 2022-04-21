@@ -2,8 +2,6 @@
 
 # Elixir Exercism
 
-## Basics
-
 ## Exercise 1
 
 Instructions
@@ -246,3 +244,199 @@ IO.inspect(combined.(6))
 ```
 
 
+
+## Exercise 3
+
+Instructions:
+In this exercise you'll be writing code to help a freelancer communicate with a project manager by providing a few utilities to quickly calculate daily and monthly rates, optionally with a given discount.
+
+We first establish a few rules between the freelancer and the project manager:
+
+The daily rate is 8 times the hourly rate.
+A month has 22 billable days.
+The freelancer is offering to apply a discount if the project manager chooses to let the freelancer bill per month, which can come in handy if there is a certain budget the project manager has to work with.
+
+Discounts are modeled as fractional numbers representing percentage, for example 25.0 (25%).
+
+1. Calculate the daily rate given an hourly rate
+   Implement a function to calculate the daily rate given an hourly rate:
+
+   ```
+   FreelancerRates.daily_rate(60)
+   # => 480.0
+   ```
+
+   The returned daily rate should be a float.
+
+2. Calculate a discounted price
+   Implement a function to calculate the price after a discount.
+
+   ```
+   FreelancerRates.apply_discount(150, 10)
+   # => 135.0
+   ```
+
+   The returned value should always be a float, not rounded in any way.
+
+3. Calculate the monthly rate, given an hourly rate and a discount
+   Implement a function to calculate the monthly rate, and apply a discount:
+
+   ```
+   FreelancerRates.monthly_rate(77, 10.5)
+   # => 12130
+   ```
+
+   The returned monthly rate should be rounded up (take the ceiling) to the nearest integer.
+
+4. Calculate the number of workdays given a budget, hourly rate and discount
+   Implement a function that takes a budget, a hourly rate, and a discount, and calculates how many days of work that covers.
+
+   ```
+   FreelancerRates.days_in_budget(20000, 80, 11.0)
+   # => 35.1
+   ```
+
+   The returned number of days should be rounded down (take the floor) to one decimal place.
+
+```elixir
+defmodule FreelancerRates do
+  def daily_rate(hourly_rate) do
+    hourly_rate * 8.0
+  end
+
+  def daily_rate(hourly_rate, discount) do
+    daily_rate(hourly_rate) |> apply_discount(discount)
+  end
+
+  def apply_discount(amount, discount) do
+    amount * (100 - discount) / 100
+  end
+
+  def monthly_rate(hourly_rate, discount) do
+    (daily_rate(hourly_rate, discount) * 22) |> ceil()
+  end
+
+  def days_in_budget(budget, hourly_rate, discount) do
+    (budget / daily_rate(hourly_rate, discount)) |> Float.floor(1)
+  end
+end
+
+IO.inspect(FreelancerRates.daily_rate(60))
+IO.inspect(FreelancerRates.apply_discount(150, 10))
+IO.inspect(FreelancerRates.monthly_rate(77, 10.5))
+IO.inspect(FreelancerRates.days_in_budget(20_000, 80, 11.0))
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+480.0
+135.0
+12130
+35.1
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+35.1
+```
+
+## Exercise 4
+
+Instructions
+In this exercise you need to implement some functions to manipulate a list of programming languages.
+
+1. Define a function to return an empty language list
+   Define the new/0 function that takes no arguments and returns an empty list.
+   ```
+   LanguageList.new()
+   # => []
+   ```
+2. Define a function to add a language to the list
+   Define the add/2 function that takes 2 arguments (a language list and a string literal of a language). It should return the resulting list with the new language prepended to the given list.
+   ```
+   LanguageList.new()
+   |> LanguageList.add("Clojure")
+   |> LanguageList.add("Haskell")
+   # => ["Haskell", "Clojure"]
+   ```
+3. Define a function to remove a language from the list
+   Define the remove/1 function that takes 1 argument (a language list). It should return the list without the first item. Assume the list will always have at least one item.
+   ```
+   LanguageList.new()
+   |> LanguageList.add("Clojure")
+   |> LanguageList.add("Haskell")
+   |> LanguageList.remove()
+   # => ["Clojure"]
+   ```
+4. Define a function to return the first item in the list
+   Define the first/1 function that takes 1 argument (a language list). It should return the first language in the list. Assume the list will always have at least one item.
+   ```
+   LanguageList.new()
+   |> LanguageList.add("Elm")
+   |> LanguageList.add("Prolog")
+   |> LanguageList.first()
+   # => "Prolog"
+   ```
+5. Define a function to return how many languages are in the list
+   Define the count/1 function that takes 1 argument (a language list). It should return the number of languages in the list.
+   ```
+   LanguageList.new()
+   |> LanguageList.add("Elm")
+   |> LanguageList.add("Prolog")
+   |> LanguageList.count()
+   # => 2
+   ```
+6. Define a function to determine if the list includes a functional language
+   Define the functional_list?/1 function which takes 1 argument (a language list). It should return a boolean value. It should return true if "Elixir" is one of the languages in the list.
+   ```
+   LanguageList.new()
+   |> LanguageList.add("Elixir")
+   |> LanguageList.functional_list?()
+   # => true
+   ```
+
+```elixir
+defmodule LanguageList do
+  def new do
+    []
+  end
+
+  def add(list, new_element) do
+    [new_element | list]
+  end
+
+  def remove(list) do
+    [_ | tail] = list
+    tail
+  end
+
+  def first(list) do
+    [head | _] = list
+    head
+  end
+
+  def count(list) do
+    length(list)
+  end
+
+  def functional_list?(list) do
+    cond do
+      count(list) == 0 -> false
+      first(list) == "Elixir" -> true
+      true -> functional_list?(remove(list))
+    end
+  end
+end
+
+LanguageList.new()
+|> LanguageList.add("Elixir")
+|> LanguageList.functional_list?()
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
