@@ -20,26 +20,26 @@ Lasagna.expected_minutes_in_oven()
 1. Calculate the remaining oven time in minutes
    Define the Lasagna.remaining_minutes_in_oven/1 method that takes the actual minutes the lasagna has been in the oven as a argument and returns how many minutes the lasagna still has to remain in the oven, based on the expected oven time in minutes from the previous task.
    ```
-   Lasagna.remaining_minutes_in_oven(30)
-   # => 10
+         Lasagna.remaining_minutes_in_oven(30)
+         # => 10
    ```
 2. Calculate the preparation time in minutes
    Define the Lasagna.preparation_time_in_minutes/1 method that takes the number of layers you added to the lasagna as a argument and returns how many minutes you spent preparing the lasagna, assuming each layer takes you 2 minutes to prepare.
    ```
-   Lasagna.preparation_time_in_minutes(2)
-   # => 4
+         Lasagna.preparation_time_in_minutes(2)
+         # => 4
    ```
 3. Calculate the total working time in minutes
    Define the Lasagna.total_time_in_minutes/2 method that takes two arguments: the first argument is the number of layers you added to the lasagna, and the second argument is the number of minutes the lasagna has been in the oven. The function should return how many minutes in total you've worked on cooking the lasagna, which is the sum of the preparation time in minutes, and the time in minutes the lasagna has spent in the oven at the moment.
    ```
-   Lasagna.total_time_in_minutes(3, 20)
-   # => 26
+         Lasagna.total_time_in_minutes(3, 20)
+         # => 26
    ```
 4. Create a notification that the lasagna is ready
    Define the Lasagna.alarm/0 method that does not take any arguments and returns a message indicating that the lasagna is ready to eat.
    ```
-   Lasagna.alarm()
-   # => "Ding!"
+         Lasagna.alarm()
+         # => "Ding!"
    ```
 
 ```elixir
@@ -228,6 +228,9 @@ IO.inspect(combined.(6))
 <!-- livebook:{"output":true} -->
 
 ```
+warning: use Bitwise is deprecated. import Bitwise instead
+  Desktop/Projects/elixir_exercism/notebook.livemd#cell:7tfge7pfcp4x3uf37jp56osxrdpx75wv:2: Secrets
+
 4
 1
 21
@@ -242,8 +245,6 @@ IO.inspect(combined.(6))
 ```
 14
 ```
-
-
 
 ## Exercise 3
 
@@ -350,51 +351,51 @@ In this exercise you need to implement some functions to manipulate a list of pr
 1. Define a function to return an empty language list
    Define the new/0 function that takes no arguments and returns an empty list.
    ```
-   LanguageList.new()
-   # => []
+         LanguageList.new()
+         # => []
    ```
 2. Define a function to add a language to the list
    Define the add/2 function that takes 2 arguments (a language list and a string literal of a language). It should return the resulting list with the new language prepended to the given list.
    ```
-   LanguageList.new()
-   |> LanguageList.add("Clojure")
-   |> LanguageList.add("Haskell")
-   # => ["Haskell", "Clojure"]
+         LanguageList.new()
+         |> LanguageList.add("Clojure")
+         |> LanguageList.add("Haskell")
+         # => ["Haskell", "Clojure"]
    ```
 3. Define a function to remove a language from the list
    Define the remove/1 function that takes 1 argument (a language list). It should return the list without the first item. Assume the list will always have at least one item.
    ```
-   LanguageList.new()
-   |> LanguageList.add("Clojure")
-   |> LanguageList.add("Haskell")
-   |> LanguageList.remove()
-   # => ["Clojure"]
+         LanguageList.new()
+         |> LanguageList.add("Clojure")
+         |> LanguageList.add("Haskell")
+         |> LanguageList.remove()
+         # => ["Clojure"]
    ```
 4. Define a function to return the first item in the list
    Define the first/1 function that takes 1 argument (a language list). It should return the first language in the list. Assume the list will always have at least one item.
    ```
-   LanguageList.new()
-   |> LanguageList.add("Elm")
-   |> LanguageList.add("Prolog")
-   |> LanguageList.first()
-   # => "Prolog"
+         LanguageList.new()
+         |> LanguageList.add("Elm")
+         |> LanguageList.add("Prolog")
+         |> LanguageList.first()
+         # => "Prolog"
    ```
 5. Define a function to return how many languages are in the list
    Define the count/1 function that takes 1 argument (a language list). It should return the number of languages in the list.
    ```
-   LanguageList.new()
-   |> LanguageList.add("Elm")
-   |> LanguageList.add("Prolog")
-   |> LanguageList.count()
-   # => 2
+         LanguageList.new()
+         |> LanguageList.add("Elm")
+         |> LanguageList.add("Prolog")
+         |> LanguageList.count()
+         # => 2
    ```
 6. Define a function to determine if the list includes a functional language
    Define the functional_list?/1 function which takes 1 argument (a language list). It should return a boolean value. It should return true if "Elixir" is one of the languages in the list.
    ```
-   LanguageList.new()
-   |> LanguageList.add("Elixir")
-   |> LanguageList.functional_list?()
-   # => true
+         LanguageList.new()
+         |> LanguageList.add("Elixir")
+         |> LanguageList.functional_list?()
+         # => true
    ```
 
 ```elixir
@@ -440,3 +441,195 @@ LanguageList.new()
 ```
 true
 ```
+
+## Log Level
+
+Instructions
+You are running a system that consists of a few applications producing many logs. You want to write a small program that will aggregate those logs and give them labels according to their severity level. All applications in your system use the same log codes, but some of the legacy applications don't support all the codes.
+
+| Log code | Log label | Supported in legacy apps? |
+| -------- | --------- | ------------------------- |
+| 0        | trace     | no                        |
+| 1        | debug     | yes                       |
+| 2        | info      | yes                       |
+| 3        | warning   | yes                       |
+| 4        | error     | yes                       |
+| 5        | fatal     | no                        |
+| ?        | unknown   | -                         |
+
+1. Return the logging code label
+
+Implement the LogLevel.to_label/2 function. It should take an integer code and a boolean flag telling you if the log comes from a legacy app, and return the label of a log line as an atom. Unknown log codes and codes unsupported in a legacy app should return an unknown label.
+
+```elixir
+LogLevel.to_label(0, false)
+# => :trace
+
+LogLevel.to_label(0, true)
+# => :unknown
+```
+
+1. Send an alert
+
+Somebody has to be notified when unexpected things happen.
+
+Implement the LogLevel.alert_recipient/2 function to determine to whom the alert needs to be sent. The function should take an integer code and a boolean flag telling you if the log comes from a legacy app, and return the name of the recipient as an atom.
+
+If the log label is error or fatal, send the alert to the ops team. If you receive a log with an unknown label from a legacy system, send the alert to the dev1 team, other unknown labels should be sent to the dev2 team. All other log labels can be safely ignored.
+
+```elixir
+LogLevel.alert_recipient(-1, true)
+# => :dev1
+
+LogLevel.alert_recipient(0, false)
+# => false
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+false
+```
+
+```elixir
+defmodule LogLevel do
+  def to_label(level, legacy?) do
+    cond do
+      level == 0 && legacy? == false -> :trace
+      level == 1 -> :debug
+      level == 2 -> :info
+      level == 3 -> :warning
+      level == 4 -> :error
+      level == 5 && legacy? == false -> :fatal
+      true -> :unknown
+    end
+  end
+
+  def alert_recipient(level, legacy?) do
+    label = to_label(level, legacy?)
+
+    cond do
+      label == :error || label == :fatal -> :ops
+      label == :unknown && legacy? == true -> :dev1
+      label == :unknown -> :dev2
+      true -> false
+    end
+
+    # Please implement the alert_recipient/2 function
+  end
+end
+
+LogLevel.to_label(0, false)
+LogLevel.alert_recipient(-1, true)
+LogLevel.alert_recipient(0, false)
+LogLevel.to_label(1, false)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:debug
+```
+
+## KitchenCalculator
+
+Instructions
+While preparing to bake cookies for your friends, you have found that you have to convert some of the measurements used in the recipe. Being only familiar with the metric system, you need to come up with a way to convert common US baking measurements to milliliters (mL) for your own ease.
+
+Use this conversion chart for your solution:
+
+| Unit to convert | volume | in milliliters (mL) |
+| --------------- | ------ | ------------------- |
+| ml              | 1      | 1                   |
+| US cup          | 1      | 240                 |
+| US fluid ounce  | 1      | 30                  |
+| US teaspoon     | 1      | 5                   |
+| US tablespoon   | 1      | 15                  |
+
+Being a talented programmer in training, you decide to use milliliters as a transition unit to facilitate the conversion from any unit listed to any other (even itself).
+
+### 1. Get the numeric component from a volume-pair
+
+Implement the `KitchenCalculator.get_volume/1` function. Given a volume-pair tuple, it should return just the numeric component.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+KitchenCalculator.get_volume({:cup, 2.0})
+# => 2.0
+```
+
+### 2. Convert the volume-pair to milliliters
+
+Implement the `KitchenCalculator.to_milliliter/1` function. Given a volume-pair tuple, it should convert the volume to milliliters using the conversion chart.
+
+Use multiple function clauses and pattern matching to create the functions for each unit. The atoms used to denote each unit are: `:cup`, `:fluid_ounce`, `:teaspoon`, `:tablespoon`, `:milliliter`. Return the result of the conversion wrapped in a tuple.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+KitchenCalculator.to_milliliter({:cup, 2.5})
+# => {:milliliter, 600.0}
+```
+
+### 3. Convert the milliliter volume-pair to another unit
+
+Implement the `KitchenCalculator.from_milliliter/2` function. Given a volume-pair tuple and the desired unit, it should convert the volume to the desired unit using the conversion chart.
+
+Use multiple function clauses and pattern matching to create the functions for each unit. The atoms used to denote each unit are: `:cup, :fluid_ounce, :teaspoon, :tablespoon, :milliliter`
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+KitchenCalculator.from_milliliter({:milliliter, 1320.0}, :cup)
+# => {:cup, 5.5}
+```
+
+### 4. Convert from any unit to any unit
+
+Implement the `KitchenCalculator.convert/2` function. Given a volume-pair tuple and the desired unit, it should convert the given volume to the desired unit.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+KitchenCalculator.convert({:teaspoon, 9.0}, :tablespoon)
+# => {:tablespoon, 3.0}
+```
+
+```elixir
+defmodule KitchenCalculator do
+  def get_volume({_, volume}), do: volume
+
+  def to_milliliter({:milliliter, value}), do: {:milliliter, value}
+  def to_milliliter({:cup, value}), do: {:milliliter, value * 240}
+  def to_milliliter({:fluid_ounce, value}), do: {:milliliter, value * 30}
+  def to_milliliter({:teaspoon, value}), do: {:milliliter, value * 5}
+  def to_milliliter({:tablespoon, value}), do: {:milliliter, value * 15}
+
+  def from_milliliter({:milliliter, value}, :milliliter), do: {:milliliter, value}
+  def from_milliliter({:milliliter, value}, :cup), do: {:cup, value / 240}
+  def from_milliliter({:milliliter, value}, :fluid_ounce), do: {:fluid_ounce, value / 30}
+  def from_milliliter({:milliliter, value}, :teaspoon), do: {:teaspoon, value / 5}
+  def from_milliliter({:milliliter, value}, :tablespoon), do: {:tablespoon, value / 15}
+
+  def convert({from_unit, value}, unit) do
+    to_milliliter({from_unit, value})
+    |> from_milliliter(unit)
+  end
+end
+
+import ExUnit.Assertions
+
+assert KitchenCalculator.get_volume({:cup, 2.0}) == 2.0
+assert KitchenCalculator.to_milliliter({:cup, 2.5}) == {:milliliter, 600.0}
+assert KitchenCalculator.from_milliliter({:milliliter, 1320.0}, :cup) == {:cup, 5.5}
+assert KitchenCalculator.convert({:teaspoon, 9.0}, :tablespoon) == {:tablespoon, 3.0}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+
