@@ -533,7 +533,8 @@ LogLevel.to_label(1, false)
 
 ## KitchenCalculator
 
-Instructions
+### Instructions
+
 While preparing to bake cookies for your friends, you have found that you have to convert some of the measurements used in the recipe. Being only familiar with the metric system, you need to come up with a way to convert common US baking measurements to milliliters (mL) for your own ease.
 
 Use this conversion chart for your solution:
@@ -632,4 +633,154 @@ assert KitchenCalculator.convert({:teaspoon, 9.0}, :tablespoon) == {:tablespoon,
 true
 ```
 
+## High School Sweetheart
 
+### Instructions
+
+In this exercise, you are going to help high school sweethearts profess their love on social media by generating an ASCII heart with their initials:
+
+```
+     ******       ******
+   **      **   **      **
+ **         ** **         **
+**            *            **
+**                         **
+**     J. K.  +  M. B.     **
+ **                       **
+   **                   **
+     **               **
+       **           **
+         **       **
+           **   **
+             ***
+              *
+```
+
+### 1. Get the name's first letter
+
+Implement the `HighSchoolSweetheart.first_letter/1` function. It should take a name and return its first letter. It should clean up any unnecessary whitespace from the name.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+HighSchoolSweetheart.first_letter("Jane")
+# => "J"
+```
+
+### 2. Format the first letter as an initial
+
+Implement the `HighSchoolSweetheart.initial/1` function. It should take a name and return its first letter, uppercase, followed by a dot. Make sure to reuse `HighSchoolSweetheart.first_letter/1` that you defined in the previous step.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+HighSchoolSweetheart.initial("Robert")
+# => "R."
+```
+
+### 3. Split the full name into the first name and the last name
+
+Implement the `HighSchoolSweetheart.initials/1` function. It should take a full name, consisting of a first name and a last name separated by a space, and return the initials. Make sure to reuse `HighSchoolSweetheart.initial/1` that you defined in the previous step.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+HighSchoolSweetheart.initials("Lance Green")
+# => "L. G."
+```
+
+### 4. Put the initials inside of the heart
+
+Implement the `HighSchoolSweetheart.pair/2` function. It should take two full names and return the initials. Make sure to reuse `HighSchoolSweetheart.initials/1` that you defined in the previous step.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+HighSchoolSweetheart.pair("Blake Miller", "Riley Lewis")
+# => """
+#      ******       ******
+#    **      **   **      **
+#  **         ** **         **
+# **            *            **
+# **                         **
+# **     B. M.  +  R. L.     **
+#  **                       **
+#    **                   **
+#      **               **
+#        **           **
+#          **       **
+#            **   **
+#              ***
+#               *
+# """
+```
+
+```elixir
+defmodule HighSchoolSweetheart do
+  def first_letter(name),
+    do: name |> String.trim() |> String.first()
+
+  def initial(name),
+    do: first_letter(name) |> String.upcase() |> Kernel.<>(".")
+
+  def initials(full_name) do
+    full_name
+    |> String.split()
+    |> Enum.map(&initial/1)
+    |> Enum.join(" ")
+  end
+
+  def pair(full_name1, full_name2) do
+    n1 = initials(full_name1)
+    n2 = initials(full_name2)
+
+    """
+         ******       ******
+       **      **   **      **
+     **         ** **         **
+    **            *            **
+    **                         **
+    **     #{n1}  +  #{n2}     **
+     **                       **
+       **                   **
+         **               **
+           **           **
+             **       **
+               **   **
+                 ***
+                  *
+    """
+  end
+end
+
+import ExUnit.Assertions
+
+assert HighSchoolSweetheart.first_letter("Jane") == "J"
+assert HighSchoolSweetheart.initial("Robert") == "R."
+assert HighSchoolSweetheart.initials("Lance Green") == "L. G."
+
+heart_assertion = """
+     ******       ******
+   **      **   **      **
+ **         ** **         **
+**            *            **
+**                         **
+**     B. M.  +  R. L.     **
+ **                       **
+   **                   **
+     **               **
+       **           **
+         **       **
+           **   **
+             ***
+              *
+"""
+
+assert HighSchoolSweetheart.pair("Blake Miller", "Riley Lewis") == heart_assertion
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
